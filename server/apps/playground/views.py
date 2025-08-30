@@ -21,7 +21,8 @@ class HiView(APIView):
         return f"Hello, {method} request received!"
 
     def get(self, request):
-        return Response({"message": self._build_message("GET")})
+        message = self._build_message("GET")
+        return Response({"message": message})
 
     def post(self, request):
         return Response({"message": self._build_message("POST")})
