@@ -53,11 +53,18 @@ class ItemView(APIView):
 
 
 class ItemDetailView(APIView):
-    def get(self, request, item_id):
+    def get_item(self, item_id):
         try:
-            item = Item.objects.get(id=item_id)
+            return Item.objects.get(id=item_id)
         except Item.DoesNotExist:
             return Response({"error": "Item not found"}, status=404)
 
+    def get(self, request, item_id):
+        item = self.get_item(item_id)
         serializer = ItemSerializer(item)
         return Response(serializer.data)
+
+    def delete(self, request, item_id):
+        item = self.get_item(item_id)
+        item.delete()
+        return Response({"message": "Item deleted"}, status=204)
