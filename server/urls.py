@@ -21,4 +21,10 @@ from django.urls import include, path
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/v1/playground/", include("server.apps.playground.urls")),
+    path(
+        "api/v1/playground/items/", include("server.apps.playground.urls")
+    ),  # New URL pattern for ItemView
+    path(
+        "api/v1/playground/items/<int:item_id>/", include("server.apps.playground.urls")
+    ),  # New URL pattern for ItemDetailView
 ]

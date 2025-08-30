@@ -3,6 +3,9 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from server.apps.management.serializer import ItemSerializer
+from server.apps.playground.models import Item
+
 # Create your views here.
 
 
@@ -26,3 +29,35 @@ class HiView(APIView):
 
     def post(self, request):
         return Response({"message": self._build_message("POST")})
+
+
+class ItemView(APIView):
+    def get(self, request):
+        items = Item.objects.all()
+        serializer = ItemSerializer(items, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        # item_data = request.data
+        # validate request data
+        serializer = ItemSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=400)
+
+        # Item.objects.create(**serializer.validated_data)
+        Item.objects.create(**serializer.validated_data)
+        # Here you would typically save the item to the database
+        return Response(
+            {"message": "Item created", "Record instert": serializer.data}, status=201
+        )
+
+
+class ItemDetailView(APIView):
+    def get(self, request, item_id):
+        try:
+            item = Item.objects.get(id=item_id)
+        except Item.DoesNotExist:
+            return Response({"error": "Item not found"}, status=404)
+
+        serializer = ItemSerializer(item)
+        return Response(serializer.data)
