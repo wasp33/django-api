@@ -1,0 +1,21 @@
+meta {
+  name: patch-update item
+  type: http
+  seq: 10
+}
+
+patch {
+  url: http://localhost:8000/api/v1/playground/items/8/
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "is_active": "true"
+  }
+}
+
+settings {
+  encodeUrl: true
+}
