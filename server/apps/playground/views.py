@@ -1,6 +1,8 @@
 # from django.shortcuts import render
 from django.http import Http404
+from django_filters.rest_framework import DjangoFilterBackend, SearchFilter
 from rest_framework.decorators import api_view
+from rest_framework.filters import OrderingFilter
 from rest_framework.generics import (
     GenericAPIView,
     ListCreateAPIView,
@@ -19,8 +21,13 @@ from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 
 from server.apps.management.serializer import ItemSerializer
-from server.apps.playground.models import Item
-from server.utils import PageNumberSizePagination
+from server.apps.playground.models import Item, ItemComment
+from server.apps.playground.serializers import (
+    ItemCommentSerializer,
+    ItemSerializer,
+    ItemWithCommentSerializer,
+)
+from server.utils.pagination import PageNumberSizePagination
 
 # Create your views here.
 
@@ -112,6 +119,38 @@ class ItemViewSet(ModelViewSet):
     serializer_class = ItemSerializer
     queryset = Item.objects.order_by("id")
     pagination_class = PageNumberSizePagination
+    page_size = 5
+    filter_backends = [  # 允許被使用的 filter 種類
+        OrderingFilter,  # 排序型的 filter
+        SearchFilter,  # 搜尋型的 filter
+        DjangoFilterBackend,  # 特定欄位的 filter
+    ]
+    ordering_fields = ["name", "id"]  # 排序型的 filter 允許使用者指定的欄位有哪些
+    ordering = ["-id"]  # 如果使用者沒有指定的話排序型 filter 要用來排序的欄位
+    search_fields = ["name", "description"]  # 關鍵字要在哪些欄位中被搜尋
+
+    # filterset_fields = ["is_active", "name"]
+    filterset_fields = {
+        "is_active": ["exact"],
+        "name": ["exact", "contains"],
+        "id": [
+            "gt",  # >
+            "gte",  # >=
+            "lt",  # <
+            "lte",  # <=
+        ],
+    }
+
+    # def get_serializer_class(self):
+    #     if self.action == "retrieve":
+    #         return ItemWithCommentSerializer
+
+    #     return super().get_serializer_class()
+
+
+class ItemCommentViewSet(ModelViewSet):
+    queryset = ItemComment.objects.all()
+    serializer_class = ItemCommentSerializer
 
 
 # class ItemDetailView(GenericAPIView):

@@ -18,3 +18,13 @@ tasks:
   showapi:
     cmds:
       - uv run manage.py show_urls
+
+  migration:
+    cmds:
+      - uv run manage.py makemigrations
+  migrate:
+    cmds:
+      - uv run manage.py migrate
+  shell:
+    cmds:
+      - uv run manage.py shell_plus
