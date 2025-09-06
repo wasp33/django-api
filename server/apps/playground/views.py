@@ -1,5 +1,6 @@
 # from django.shortcuts import render
 from rest_framework.decorators import api_view
+from rest_framework.generics import GenericAPIView, ListCreateAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -52,7 +53,18 @@ class ItemView(APIView):
         )
 
 
-class ItemDetailView(APIView):
+# GET /xxxxxx/items/<id> => 得到資料庫中指定的 Items
+# GET /xxxxxx/items => 得到資料庫中所有的 Items
+
+
+class ItemListView(ListCreateAPIView):
+    serializer_class = ItemSerializer
+    queryset = Item.objects.all()
+
+
+class ItemDetailView(GenericAPIView):
+    serializer_class = ItemSerializer
+
     def get_item(self, item_id):
         try:
             return Item.objects.get(id=item_id)
@@ -61,7 +73,7 @@ class ItemDetailView(APIView):
 
     def get(self, request, item_id):
         item = self.get_item(item_id)
-        serializer = ItemSerializer(item)
+        serializer = self.get_serializer(item)
         return Response(serializer.data)
 
     def delete(self, request, item_id):
@@ -71,7 +83,7 @@ class ItemDetailView(APIView):
 
     def put(self, request, item_id):
         item = self.get_item(item_id)
-        serializer = ItemSerializer(item, data=request.data)
+        serializer = self.get_serializer(item, data=request.data)
         if not serializer.is_valid():
             return Response(serializer.errors, status=400)
         serializer.save()
@@ -79,7 +91,7 @@ class ItemDetailView(APIView):
 
     def patch(self, request, item_id):
         item = self.get_item(item_id)
-        serializer = ItemSerializer(item, data=request.data, partial=True)
+        serializer = self.get_serializer(item, data=request.data, partial=True)
         if not serializer.is_valid():
             return Response(serializer.errors, status=400)
         serializer.save()
