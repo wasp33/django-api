@@ -13,12 +13,14 @@ from rest_framework.mixins import (
     RetrieveModelMixin,  # 負責單一物件存取 (GET)
     UpdateModelMixin,  # 負責更新 (PUT, PATCH)
 )
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 
 from server.apps.management.serializer import ItemSerializer
 from server.apps.playground.models import Item
+from server.utils import PageNumberSizePagination
 
 # Create your views here.
 
@@ -108,7 +110,8 @@ class ItemDetailView(RetrieveUpdateDestroyAPIView):
 ## ViewSet
 class ItemViewSet(ModelViewSet):
     serializer_class = ItemSerializer
-    queryset = Item.objects.all()
+    queryset = Item.objects.order_by("id")
+    pagination_class = PageNumberSizePagination
 
 
 # class ItemDetailView(GenericAPIView):

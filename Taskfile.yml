@@ -14,3 +14,7 @@ tasks:
   run:
     cmds:
       - uv run manage.py runserver
+
+  showapi:
+    cmds:
+      - uv run manage.py show_urls
