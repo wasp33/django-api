@@ -1,11 +1,11 @@
 meta {
-  name: update item
+  name: update items viewset
   type: http
-  seq: 9
+  seq: 4
 }
 
 put {
-  url: http://localhost:8000/api/v1/playground/items/8/
+  url: http://localhost:8000/api/v1/playground/viewset/items-v2/8
   body: json
   auth: inherit
 }
@@ -13,7 +13,7 @@ put {
 body:json {
   {
       "name": "Doris8",
-      "description": "my name",
+      "description": "my doris",
       "is_active": "true"
     }
 }

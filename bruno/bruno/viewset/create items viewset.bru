@@ -1,0 +1,23 @@
+meta {
+  name: create items viewset
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:8000/api/v1/playground/viewset/items-v2
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "name": "Doris9",
+    "description": "my name",
+    "is_active": "True"
+  }
+}
+
+settings {
+  encodeUrl: true
+}
