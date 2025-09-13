@@ -1,0 +1,20 @@
+meta {
+  name: api_v1_playground_items_create
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{baseUrl}}/api/v1/playground/items
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "id": 0,
+    "name": "",
+    "description": "",
+    "is_active": false
+  }
+}

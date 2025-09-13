@@ -1,0 +1,28 @@
+meta {
+  name: api_v1_playground_viewset_items_v2_create
+  type: http
+  seq: 19
+}
+
+post {
+  url: {{baseUrl}}/api/v1/playground/viewset/items-v2
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "id": 0,
+    "name": "",
+    "description": "",
+    "is_active": false,
+    "comments": [
+      {
+        "id": 0,
+        "content": "",
+        "created_at": "",
+        "updated_at": ""
+      }
+    ]
+  }
+}

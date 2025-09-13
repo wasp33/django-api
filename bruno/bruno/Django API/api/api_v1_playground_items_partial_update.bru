@@ -1,0 +1,24 @@
+meta {
+  name: api_v1_playground_items_partial_update
+  type: http
+  seq: 10
+}
+
+patch {
+  url: {{baseUrl}}/api/v1/playground/items/:item_id
+  body: json
+  auth: none
+}
+
+params:path {
+  item_id: 
+}
+
+body:json {
+  {
+    "id": 0,
+    "name": "",
+    "description": "",
+    "is_active": false
+  }
+}

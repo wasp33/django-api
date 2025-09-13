@@ -5,9 +5,13 @@ meta {
 }
 
 get {
-  url: http://localhost:8000/api/v1/playground/viewset/items-v2
+  url: http://localhost:8000/api/v1/playground/viewset/items-v2?ordering=id
   body: none
   auth: inherit
+}
+
+params:query {
+  ordering: id
 }
 
 settings {
